@@ -1,0 +1,5 @@
+.env
+contract/broadcast
+contract/cache
+contract/out
+contract/coverage.txt
