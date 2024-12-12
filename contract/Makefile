@@ -30,4 +30,4 @@ coverage :; forge coverage --report debug > coverage.txt
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
 Deploy:
-	@forge script script/DeployIncomeTrust.s.sol:DeployIncomeTrust --rpc-url $(BSC_RPC_URL) --account TEST1 --verify --etherscan-api-key $(ETHERSCAN_API_KEY) --legacy --broadcast
+	@forge script script/DeployIncomeTrust.s.sol:DeployIncomeTrust --rpc-url $(BSC_TESTNET_RPC_URL) --account TEST1 --verify --etherscan-api-key $(ETHERSCAN_API_KEY) --legacy --broadcast
