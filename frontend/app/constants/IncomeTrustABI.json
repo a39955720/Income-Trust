@@ -1,0 +1,482 @@
+[
+  { "type": "constructor", "inputs": [], "stateMutability": "nonpayable" },
+  {
+    "type": "function",
+    "name": "deposit",
+    "inputs": [
+      {
+        "name": "beneficiary",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "withdrawalLimitsPercentages",
+        "type": "uint8[]",
+        "internalType": "uint8[]"
+      },
+      {
+        "name": "periodicPercentages",
+        "type": "uint8[]",
+        "internalType": "uint8[]"
+      },
+      {
+        "name": "payoutInterval",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "startTimestamp",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "getAllAvailableWithdrawalBalance",
+    "inputs": [
+      { "name": "beneficiary", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getAvailableWithdrawalBalance",
+    "inputs": [
+      { "name": "beneficiary", "type": "address", "internalType": "address" },
+      { "name": "_index", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getAvailableWithdrawalBalanceArray",
+    "inputs": [
+      { "name": "beneficiary", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      { "name": "balance", "type": "uint256[]", "internalType": "uint256[]" },
+      {
+        "name": "data",
+        "type": "tuple[]",
+        "internalType": "struct IncomeTrust.depositData[]",
+        "components": [
+          { "name": "id", "type": "uint256", "internalType": "uint256" },
+          {
+            "name": "depositor",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "depositAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "beneficiary",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "withdrawalLimitsPercentages",
+            "type": "uint8[]",
+            "internalType": "uint8[]"
+          },
+          {
+            "name": "periodicPercentages",
+            "type": "uint8[]",
+            "internalType": "uint8[]"
+          },
+          {
+            "name": "withdrawnAmounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "payoutInterval",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "depositTimestamps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "startTimestamp",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          { "name": "isRevoked", "type": "bool", "internalType": "bool" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getBeneficiaryData",
+    "inputs": [
+      { "name": "beneficiary", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple[]",
+        "internalType": "struct IncomeTrust.beneficiaryData[]",
+        "components": [
+          { "name": "id", "type": "uint256", "internalType": "uint256" },
+          { "name": "index", "type": "uint256", "internalType": "uint256" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getDepositData",
+    "inputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct IncomeTrust.depositData",
+        "components": [
+          { "name": "id", "type": "uint256", "internalType": "uint256" },
+          {
+            "name": "depositor",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "depositAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "beneficiary",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "withdrawalLimitsPercentages",
+            "type": "uint8[]",
+            "internalType": "uint8[]"
+          },
+          {
+            "name": "periodicPercentages",
+            "type": "uint8[]",
+            "internalType": "uint8[]"
+          },
+          {
+            "name": "withdrawnAmounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "payoutInterval",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "depositTimestamps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "startTimestamp",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          { "name": "isRevoked", "type": "bool", "internalType": "bool" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getDepositDataArray",
+    "inputs": [
+      { "name": "id", "type": "uint256[]", "internalType": "uint256[]" }
+    ],
+    "outputs": [
+      {
+        "name": "data",
+        "type": "tuple[]",
+        "internalType": "struct IncomeTrust.depositData[]",
+        "components": [
+          { "name": "id", "type": "uint256", "internalType": "uint256" },
+          {
+            "name": "depositor",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "depositAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "beneficiary",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "withdrawalLimitsPercentages",
+            "type": "uint8[]",
+            "internalType": "uint8[]"
+          },
+          {
+            "name": "periodicPercentages",
+            "type": "uint8[]",
+            "internalType": "uint8[]"
+          },
+          {
+            "name": "withdrawnAmounts",
+            "type": "uint256[]",
+            "internalType": "uint256[]"
+          },
+          {
+            "name": "payoutInterval",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "depositTimestamps",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "startTimestamp",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          { "name": "isRevoked", "type": "bool", "internalType": "bool" }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getDepositHistory",
+    "inputs": [
+      { "name": "depositor", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      { "name": "", "type": "uint256[]", "internalType": "uint256[]" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "modifyDeposit",
+    "inputs": [
+      { "name": "id", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "beneficiary",
+        "type": "address[]",
+        "internalType": "address[]"
+      },
+      {
+        "name": "withdrawalLimitsPercentages",
+        "type": "uint8[]",
+        "internalType": "uint8[]"
+      },
+      {
+        "name": "periodicPercentages",
+        "type": "uint8[]",
+        "internalType": "uint8[]"
+      },
+      {
+        "name": "payoutInterval",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "startTimestamp",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "owner",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "renounceOwnership",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "revokeDeposit",
+    "inputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "transferOwnership",
+    "inputs": [
+      { "name": "newOwner", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "withdraw",
+    "inputs": [
+      { "name": "_index", "type": "uint256", "internalType": "uint256" },
+      { "name": "amount", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "withdrawAll",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "event",
+    "name": "OwnershipTransferred",
+    "inputs": [
+      {
+        "name": "previousOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "newOwner",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__BeneficiaryAndPeriodicPercentagesLengthMismatch",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__BeneficiaryAndWithdrawalLimitsLengthMismatch",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__DepositAmountShouldBeGreaterThan100Wei",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__DuplicateBeneficiary",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__OnlyTheDepositorCanModifyTheDeposit",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__OnlyTheDepositorCanRevokeTheDeposit",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__PayoutIntervalShouldBeGreaterThanZero",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__PeriodicPercentageShouldBeGreaterThanZero",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__PeriodicPercentageShouldBeLessThan100",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__PeriodicPercentageShouldBeLessThanWithdrawalLimitsPercentage",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__StartTimestampShouldBeGreaterThanCurrentTimestamp",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__TheDepositIsAlreadyRevoked",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__TheDepositIsAlreadyStartedYet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__TheDepositIsNotStartedYet",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__TotalWithdrawalLimitsPercentageShouldBe100",
+    "inputs": []
+  },
+  { "type": "error", "name": "IncomeTrust__TransferFailed", "inputs": [] },
+  {
+    "type": "error",
+    "name": "IncomeTrust__WithdrawalAmountShouldBeGreaterThanZero",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__WithdrawalAmountShouldBeLessThanAvailableBalance",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "IncomeTrust__WithdrawalLimitsPercentageShouldBeGreaterThanZero",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "OwnableInvalidOwner",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "OwnableUnauthorizedAccount",
+    "inputs": [
+      { "name": "account", "type": "address", "internalType": "address" }
+    ]
+  },
+  { "type": "error", "name": "ReentrancyGuardReentrantCall", "inputs": [] }
+]

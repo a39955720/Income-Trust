@@ -3,3 +3,5 @@ contract/broadcast
 contract/cache
 contract/out
 contract/coverage.txt
+frontend/node_modules
+frontend/.next/
