@@ -100,9 +100,7 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
             if (withdrawalLimitsPercentages[i] == 0) {
                 revert IncomeTrust__WithdrawalLimitsPercentageShouldBeGreaterThanZero();
             }
-            s_beneficiaryData[beneficiary[i]].push(
-                beneficiaryData({id: s_id, index: i})
-            );
+            s_beneficiaryData[beneficiary[i]].push(beneficiaryData({id: s_id, index: i}));
             s_idToIndex[beneficiary[i]][s_id] = i;
         }
 
@@ -110,7 +108,7 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
             revert IncomeTrust__TotalWithdrawalLimitsPercentageShouldBe100();
         }
 
-        (bool success, ) = owner().call{value: (msg.value * 5) / 100}("");
+        (bool success,) = owner().call{value: (msg.value * 5) / 100}("");
         if (!success) {
             revert IncomeTrust__TransferFailed();
         }
@@ -185,9 +183,7 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
             if (withdrawalLimitsPercentages[i] == 0) {
                 revert IncomeTrust__WithdrawalLimitsPercentageShouldBeGreaterThanZero();
             }
-            s_beneficiaryData[beneficiary[i]][
-                s_idToIndex[beneficiary[i]][id]
-            ] = beneficiaryData({id: s_id, index: i});
+            s_beneficiaryData[beneficiary[i]][s_idToIndex[beneficiary[i]][id]] = beneficiaryData({id: s_id, index: i});
         }
 
         if (totalPercentage != 100) {
@@ -227,7 +223,7 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
         } else {
             s_depositData[id].withdrawnAmounts[index] += amount;
 
-            (bool success, ) = msg.sender.call{value: amount}("");
+            (bool success,) = msg.sender.call{value: amount}("");
             if (!success) {
                 revert IncomeTrust__TransferFailed();
             }
@@ -243,39 +239,28 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
         for (uint256 i = 0; i < s_beneficiaryData[msg.sender].length; i++) {
             uint256 id = s_beneficiaryData[msg.sender][i].id;
             uint256 index = s_beneficiaryData[msg.sender][i].index;
-            if (
-                s_depositData[id].isRevoked ||
-                block.timestamp < s_depositData[id].startTimestamp
-            ) {
+            if (s_depositData[id].isRevoked || block.timestamp < s_depositData[id].startTimestamp) {
                 continue;
             }
 
-            uint256 _totalAmount = (((block.timestamp -
-                s_depositData[id].depositTimestamps) /
-                s_depositData[id].payoutInterval) *
-                s_depositData[id].depositAmount *
-                s_depositData[id].periodicPercentages[index]) / 100;
+            uint256 _totalAmount = (
+                ((block.timestamp - s_depositData[id].depositTimestamps) / s_depositData[id].payoutInterval)
+                    * s_depositData[id].depositAmount * s_depositData[id].periodicPercentages[index]
+            ) / 100;
 
             if (
-                _totalAmount >=
-                (s_depositData[id].depositAmount *
-                    s_depositData[id].withdrawalLimitsPercentages[index]) /
-                    100
+                _totalAmount
+                    >= (s_depositData[id].depositAmount * s_depositData[id].withdrawalLimitsPercentages[index]) / 100
             ) {
-                _totalAmount =
-                    (s_depositData[id].depositAmount *
-                        s_depositData[id].withdrawalLimitsPercentages[index]) /
-                    100 -
-                    s_depositData[id].withdrawnAmounts[index];
+                _totalAmount = (s_depositData[id].depositAmount * s_depositData[id].withdrawalLimitsPercentages[index])
+                    / 100 - s_depositData[id].withdrawnAmounts[index];
             } else {
-                _totalAmount =
-                    _totalAmount -
-                    s_depositData[id].withdrawnAmounts[index];
+                _totalAmount = _totalAmount - s_depositData[id].withdrawnAmounts[index];
             }
             s_depositData[id].withdrawnAmounts[index] += _totalAmount;
         }
 
-        (bool success, ) = msg.sender.call{value: totalAmount}("");
+        (bool success,) = msg.sender.call{value: totalAmount}("");
         if (!success) {
             revert IncomeTrust__TransferFailed();
         }
@@ -297,18 +282,13 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
 
         s_depositData[id].isRevoked = true;
 
-        (bool success, ) = msg.sender.call{
-            value: s_depositData[id].depositAmount - totalWithdrawnAmount
-        }("");
+        (bool success,) = msg.sender.call{value: s_depositData[id].depositAmount - totalWithdrawnAmount}("");
         if (!success) {
             revert IncomeTrust__TransferFailed();
         }
     }
 
-    function getAvailableWithdrawalBalance(
-        address beneficiary,
-        uint256 _index
-    ) public view returns (uint256) {
+    function getAvailableWithdrawalBalance(address beneficiary, uint256 _index) public view returns (uint256) {
         uint256 id = s_beneficiaryData[beneficiary][_index].id;
         uint256 index = s_beneficiaryData[beneficiary][_index].index;
 
@@ -316,80 +296,59 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
             return 0;
         }
 
-        uint256 totalAmount = (((block.timestamp -
-            s_depositData[id].startTimestamp) /
-            s_depositData[id].payoutInterval) *
-            s_depositData[id].depositAmount *
-            s_depositData[id].periodicPercentages[index]) / 100;
+        if (s_depositData[id].isRevoked) {
+            return 0;
+        }
+
+        uint256 totalAmount = (
+            ((block.timestamp - s_depositData[id].startTimestamp) / s_depositData[id].payoutInterval)
+                * s_depositData[id].depositAmount * s_depositData[id].periodicPercentages[index]
+        ) / 100;
 
         if (
-            totalAmount >=
-            (s_depositData[id].depositAmount *
-                s_depositData[id].withdrawalLimitsPercentages[index]) /
-                100
+            totalAmount
+                >= (s_depositData[id].depositAmount * s_depositData[id].withdrawalLimitsPercentages[index]) / 100
         ) {
-            totalAmount =
-                (s_depositData[id].depositAmount *
-                    s_depositData[id].withdrawalLimitsPercentages[index]) /
-                100 -
-                s_depositData[id].withdrawnAmounts[index];
+            totalAmount = (s_depositData[id].depositAmount * s_depositData[id].withdrawalLimitsPercentages[index]) / 100
+                - s_depositData[id].withdrawnAmounts[index];
         } else {
-            totalAmount =
-                totalAmount -
-                s_depositData[id].withdrawnAmounts[index];
+            totalAmount = totalAmount - s_depositData[id].withdrawnAmounts[index];
         }
 
         return totalAmount;
     }
 
-    function getAllAvailableWithdrawalBalance(
-        address beneficiary
-    ) public view returns (uint256) {
+    function getAllAvailableWithdrawalBalance(address beneficiary) public view returns (uint256) {
         uint256 totalAmount = 0;
         for (uint256 i = 0; i < s_beneficiaryData[beneficiary].length; i++) {
             uint256 id = s_beneficiaryData[beneficiary][i].id;
             uint256 index = s_beneficiaryData[beneficiary][i].index;
-            if (
-                s_depositData[id].isRevoked ||
-                block.timestamp < s_depositData[id].startTimestamp
-            ) {
+            if (s_depositData[id].isRevoked || block.timestamp < s_depositData[id].startTimestamp) {
                 continue;
             }
-            uint256 _totalAmount = (((block.timestamp -
-                s_depositData[id].startTimestamp) /
-                s_depositData[id].payoutInterval) *
-                s_depositData[id].depositAmount *
-                s_depositData[id].periodicPercentages[index]) / 100;
+            uint256 _totalAmount = (
+                ((block.timestamp - s_depositData[id].startTimestamp) / s_depositData[id].payoutInterval)
+                    * s_depositData[id].depositAmount * s_depositData[id].periodicPercentages[index]
+            ) / 100;
 
             if (
-                _totalAmount >=
-                (s_depositData[id].depositAmount *
-                    s_depositData[id].withdrawalLimitsPercentages[index]) /
-                    100
+                _totalAmount
+                    >= (s_depositData[id].depositAmount * s_depositData[id].withdrawalLimitsPercentages[index]) / 100
             ) {
-                totalAmount +=
-                    (s_depositData[id].depositAmount *
-                        s_depositData[id].withdrawalLimitsPercentages[index]) /
-                    100 -
-                    s_depositData[id].withdrawnAmounts[index];
+                totalAmount += (s_depositData[id].depositAmount * s_depositData[id].withdrawalLimitsPercentages[index])
+                    / 100 - s_depositData[id].withdrawnAmounts[index];
             } else {
-                totalAmount +=
-                    _totalAmount -
-                    s_depositData[id].withdrawnAmounts[index];
+                totalAmount += _totalAmount - s_depositData[id].withdrawnAmounts[index];
             }
         }
         return totalAmount;
     }
 
-    function getDepositData(
-        uint256 id
-    ) public view returns (depositData memory) {
+    function getDepositData(uint256 id) public view returns (depositData memory) {
         return s_depositData[id];
     }
 
-    function getDepositDataArray(
-        uint256[] memory id
-    ) public view returns (depositData[] memory data) {
+    function getDepositDataArray(uint256[] memory id) public view returns (depositData[] memory data) {
         data = new depositData[](id.length);
         for (uint256 i = 0; i < id.length; i++) {
             data[i] = s_depositData[id[i]];
@@ -397,28 +356,20 @@ contract IncomeTrust is ReentrancyGuard, Ownable {
         return data;
     }
 
-    function getDepositHistory(
-        address depositor
-    ) public view returns (uint256[] memory) {
+    function getDepositHistory(address depositor) public view returns (uint256[] memory) {
         return s_depositHistory[depositor];
     }
 
-    function getBeneficiaryData(
-        address beneficiary
-    ) public view returns (beneficiaryData[] memory) {
+    function getBeneficiaryData(address beneficiary) public view returns (beneficiaryData[] memory) {
         return s_beneficiaryData[beneficiary];
     }
 
-    function getAvailableWithdrawalBalanceArray(
-        address beneficiary
-    )
+    function getAvailableWithdrawalBalanceArray(address beneficiary)
         public
         view
         returns (uint256[] memory balance, depositData[] memory data)
     {
-        uint256[] memory array = new uint256[](
-            getBeneficiaryData(beneficiary).length
-        );
+        uint256[] memory array = new uint256[](getBeneficiaryData(beneficiary).length);
         balance = new uint256[](getBeneficiaryData(beneficiary).length);
         for (uint256 i = 0; i < getBeneficiaryData(beneficiary).length; i++) {
             balance[i] = getAvailableWithdrawalBalance(beneficiary, i);
