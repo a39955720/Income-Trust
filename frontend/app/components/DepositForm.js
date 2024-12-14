@@ -312,7 +312,12 @@ export default function DepositForm() {
             required
           />
         </div>
-
+        <div className="mt-4 text-sm text-gray-300">
+          <p>1. A 5% service fee will be charged.</p>
+          <p>
+            2. Once interest calculation begins, the content cannot be modified.
+          </p>
+        </div>
         <button
           type={isBscTestnet ? "submit" : "button"}
           disabled={isLoading || isPending || isConfirming}
