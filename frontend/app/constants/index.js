@@ -1,5 +1,5 @@
 const IncomeTrustABI = require("./IncomeTrustABI.json");
-const IncomeTrustAddress = "0x7848B3b434a65E1A924b4238F537bAB53B9E47A4";
+const IncomeTrustAddress = "0x8342fd21Da22d1506395E3e2aCD427Ec52A66fbF";
 
 module.exports = {
   IncomeTrustABI,
